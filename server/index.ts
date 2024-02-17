@@ -9,8 +9,6 @@ app.get('/', (req: Request, res: Response) => {
 	res.send("Hello from Express using TypeScript");
 });
 
-app.listen(port, (err) => {
-	if(err) console.error("Error in running server:" err);
-
-	console.log("[server]: Server is running on port ", PORT);
+app.listen(port, () => {
+	console.log("[server]: Server is running on port ", port);
 });
