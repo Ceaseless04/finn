@@ -1,33 +1,41 @@
-package apis;
+package apis
 
 import (
 	"context"
-	"fmt"
+	//"fmt"
 	"os"
+	"log"
 
+	"github.com/joho/godotenv"
 	polygon "github.com/polygon-io/client-go/rest"
 	"github.com/polygon-io/client-go/rest/models"
 )
 
 // function to get exponential moving average
-func getEMA() {
-	
+func GetEMA() {
+
+	// loading env file with checks for when the file is empty
+	err := godotenv.Load("../.env");
+
+	if err != nil {
+		log.Print(err);
+	}
+
 	// new client using the polygon api
 	client := polygon.New(os.Getenv("POLYGON_API"));
 
 	// set params
-	params := &models.GetLastTradeParams{
+	params := models.GetEMAParams{
 		Ticker: "AAPL",
 	};
-
+	
 	// make request
-	res, err := client.GetLastTrade(context.Background(), params);
+	res, err := client.GetEMA(context.Background(), &params);
 	if err != nil {
-		fmt.Println(err);
+		log.Print(err);
 	}
 
 	// print result
-	fmt.Println(res);
+	log.Print(res);
 
-	fmt.Println(client);
 }

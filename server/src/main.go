@@ -1,12 +1,12 @@
-package main;
+package main
 
 import (
+	"dependencies/stocks/src/apis"
 	"fmt"
-	"github.com/Ceaseless04"
 );
 
 func main() {
 	fmt.Println("Hello World");
 
-	getEMA();
+	apis.GetEMA();
 }
