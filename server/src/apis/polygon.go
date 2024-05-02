@@ -1,41 +1,50 @@
-package apis
+package apis;
 
 import (
 	"context"
-	//"fmt"
-	"os"
+	"fmt"
 	"log"
-
+	"os"
 	"github.com/joho/godotenv"
+	
 	polygon "github.com/polygon-io/client-go/rest"
 	"github.com/polygon-io/client-go/rest/models"
 )
 
-// function to get exponential moving average
-func GetEMA() {
 
-	// loading env file with checks for when the file is empty
-	err := godotenv.Load("../.env");
 
-	if err != nil {
-		log.Print(err);
+// loading env file to create new client with Polygon API
+var env = godotenv.Load("../.env");
+var client = polygon.New(os.Getenv("POLYGON_API"));
+
+// function to get exponential moving averages from ticker
+func Calc_EMA(name string, limit int) []float64 {
+
+	if env != nil {
+		log.Fatal("Error loading env file");
 	}
-
-	// new client using the polygon api
-	client := polygon.New(os.Getenv("POLYGON_API"));
 
 	// set params
 	params := models.GetEMAParams{
-		Ticker: "AAPL",
-	};
+		Ticker: name,
+	}.WithLimit(limit);
 	
 	// make request
-	res, err := client.GetEMA(context.Background(), &params);
+	res, err := client.GetEMA(context.Background(), params);
 	if err != nil {
 		log.Print(err);
 	}
 
 	// print result
-	log.Print(res);
+	fmt.Println(res);
 
+	// gettting values array to store Value in ema_value
+	values := res.Results.Values;
+	ema_values := []float64{};
+
+	for i, v := range values {
+		ema_values[i] = v.Value;
+	}
+
+	return ema_values; // return array
 }
