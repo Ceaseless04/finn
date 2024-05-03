@@ -3,21 +3,21 @@ package apis;
 import (
 	"net/http"
 	"github.com/gin-gonic/gin"
+	"github.com/polygon-io/client-go/rest/models"
 );
 
 type Ticker struct {
-	name string;
-	limit int;
-	EMA []float64;
+	Name string		`json:"name"`
+	Limit int		`json:"limit"`
+	EMA models.SingleIndicatorValues	`json:"EMA"`
 }
 
-
-func createTicker() gin.HandlerFunc {
-	var AAPL Ticker;
-
-	AAPL.name = "AAPL";
-	AAPL.limit = 100;
-	AAPL.EMA = Calc_EMA(AAPL.name, AAPL.limit);
+func getTicker() gin.HandlerFunc {
+	AAPL := Ticker{
+		Name: "AAPL",
+		Limit: 100,
+		EMA: Calc_EMA("AAPL", 100),
+	}
 
 	fn := func(c *gin.Context) {
 		c.JSON(http.StatusOK, AAPL);
@@ -28,6 +28,6 @@ func createTicker() gin.HandlerFunc {
 
 func Display() {
 	router := gin.Default();
-	router.GET("/apis/EMA", createTicker());
+	router.GET("/apis/EMA", getTicker());
 	router.Run("localhost:8080");
 }

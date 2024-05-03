@@ -18,7 +18,7 @@ var env = godotenv.Load("../.env");
 var client = polygon.New(os.Getenv("POLYGON_API"));
 
 // function to get exponential moving averages from ticker
-func Calc_EMA(name string, limit int) []{
+func Calc_EMA(name string, limit int) models.SingleIndicatorValues {
 
 	if env != nil {
 		log.Fatal("Error loading env file");
@@ -40,11 +40,6 @@ func Calc_EMA(name string, limit int) []{
 
 	// gettting values array to store Value in ema_value
 	values := res.Results.Values;
-	ema_values := []float64{};
 
-	for i, v := range values {
-		ema_values[i] = v.Value;
-	}
-
-	return ema_values; // return array
+	return values; // return array
 }
