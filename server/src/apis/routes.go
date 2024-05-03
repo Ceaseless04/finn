@@ -20,7 +20,7 @@ func createTicker() gin.HandlerFunc {
 	AAPL.EMA = Calc_EMA(AAPL.name, AAPL.limit);
 
 	fn := func(c *gin.Context) {
-		c.IndentedJSON(http.StatusOK, AAPL);
+		c.JSON(http.StatusOK, AAPL);
 	}
 
 	return gin.HandlerFunc(fn);
